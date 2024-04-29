@@ -14,9 +14,13 @@ services:
 
   web:
     build: .
-    command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+
+    # DBが先に起動終了するように遅延させる
+    command: >
+      sh -c "sleep 10 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
     ports:
       - "8000:8000"
     depends_on:
